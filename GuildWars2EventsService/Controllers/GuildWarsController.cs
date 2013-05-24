@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web.Script.Serialization;
 using Enyim.Caching.Memcached;
-using GuildWars2EventsService.Info;
+using GuildWars2Events.Model;
 
 namespace GuildWars2EventsService.Controllers
 {
