@@ -1,7 +1,6 @@
 ﻿using System;
-using Newtonsoft.Json;
 
-namespace GuildWars2EventsService.Info
+namespace GuildWars2Events.Model
 {
     [Serializable]
     public class World
