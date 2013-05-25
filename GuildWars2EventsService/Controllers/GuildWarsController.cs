@@ -38,7 +38,7 @@ namespace GuildWars2EventsService.Controllers
                 _activeWorlds = new List<World>();
                 foreach (World world in _worlds)
                 {
-                    world.LastActive = DateTime.Now.AddMinutes(-_minutesBeforeAWorldBecomesInactive);
+                    world.LastActive = DateTime.Now.AddMinutes(-(_minutesBeforeAWorldBecomesInactive-1));
                     _activeWorlds.Add(world);
                 }
                 if (_activeWorlds != null)
