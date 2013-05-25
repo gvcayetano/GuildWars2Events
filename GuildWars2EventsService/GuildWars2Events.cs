@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Runtime.Serialization.Json;
 using System.Timers;
+using GuildWars2Events.Model;
 using GuildWars2EventsService.Controllers;
 
 namespace GuildWars2EventsService
@@ -23,15 +24,30 @@ namespace GuildWars2EventsService
 
         public void GetEvents()
         {
+            UpdateInfo updateInfo = null;
             try
             {
-                Console.WriteLine("It is {0} an all is well", DateTime.Now);
                 GuildWarsController guildWarsController = new GuildWarsController();
-                bool success = guildWarsController.Update();
+                updateInfo = guildWarsController.Update();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if (updateInfo != null)
+                {
+                    Console.WriteLine("[{0}] Number of active worlds: {1}.", DateTime.Now, updateInfo.ActiveWorldsCount);
+                    if (updateInfo.ActiveWorldsUpdates > 0)
+                    {
+                        Console.WriteLine("[{0}] Done with all updates.", DateTime.Now);
+                    }
+                    else
+                    {
+                        Console.WriteLine("[{0}] No updates.", DateTime.Now);
+                    }
+                }
             }
         }
     }

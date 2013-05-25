@@ -1,80 +1,119 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Web.Script.Serialization;
+using System.Configuration;
 using Enyim.Caching.Memcached;
 using GuildWars2Events.Model;
+using GuildWars2Events.Model.Extensions;
+using Newtonsoft.Json;
 
 namespace GuildWars2EventsService.Controllers
 {
     public class GuildWarsController
     {
-        private DataContractJsonSerializer _dataContractJsonSerializer;
-        private readonly JavaScriptSerializer _javaScriptSerializer;
-        private const string EventsUrl = "https://api.guildwars2.com/v1/events.json?world_id=";
-        private const string WorldsUrl = "https://api.guildwars2.com/v1/world_names.json";
-        private const string EventNames = "https://api.guildwars2.com/v1/event_names.json";
-        private const string MapNames = "https://api.guildwars2.com/v1/map_names.json";
-        private const string WorldKey = "worlds";
-        private const string MapKey = "maps";
-        private const string EventNamesKey = "eventNames";
+        // Raw from arena net.
+        private readonly List<World> _worlds;
+        private readonly List<EventName> _eventNames;
+        private readonly List<MapName> _mapNames;
+        // Raw from arena net.
+
+        private readonly GuildWars2ApiHandler _guildWars2ApiHandler;
+        private readonly List<World> _activeWorlds;
+        private readonly int _minutesBeforeAWorldBecomesInactive;
 
         public GuildWarsController()
         {
-            _javaScriptSerializer = new JavaScriptSerializer();
+            _guildWars2ApiHandler = new GuildWars2ApiHandler();
+            _minutesBeforeAWorldBecomesInactive = Convert.ToInt32(ConfigurationManager.AppSettings["MinutesBeforeAWorldBecomesInactive"]);
+            if(_worlds == null) _worlds = GetWorlds();
+            if (_eventNames == null) _eventNames = GetEventNames();
+            if (_mapNames == null) _mapNames = GetMapNames();
+            var activeWorlds = CouchbaseManager.Instance.Get(CouchbaseKeys.ActiveWorlds);
+            if (activeWorlds != null)
+            {
+                _activeWorlds = JsonConvert.DeserializeObject<List<World>>(activeWorlds.ToString());
+            }
+            else
+            {
+                //If ActiveWorlds is not set make all worlds active for 1 minute.
+                _activeWorlds = new List<World>();
+                foreach (World world in _worlds)
+                {
+                    world.LastActive = DateTime.Now.AddMinutes(-_minutesBeforeAWorldBecomesInactive);
+                    _activeWorlds.Add(world);
+                }
+                if (_activeWorlds != null)
+                {
+                    CouchbaseManager.Instance.Store(
+                        StoreMode.Set
+                        , CouchbaseKeys.ActiveWorlds
+                        , JsonConvert.SerializeObject(_activeWorlds));
+                }
+            }
         }
 
-        public bool Update()
+        private List<MapName> GetMapNames()
         {
-            List<World> worlds = GetWorlds();
-            foreach (World world in worlds)
+            var mapNames = CouchbaseManager.Instance.Get(CouchbaseKeys.MapNames);
+            if (mapNames == null)
             {
-                Console.WriteLine("{0}{1}", EventsUrl, world.id);
+                mapNames = _guildWars2ApiHandler.GetMapNames();
+                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.MapNames, mapNames);
             }
-            return true;
+            return JsonConvert.DeserializeObject<List<MapName>>(mapNames.ToString());
+        }
+
+        private List<EventName> GetEventNames()
+        {
+            var eventNames = CouchbaseManager.Instance.Get(CouchbaseKeys.EventNames);
+            if (eventNames == null)
+            {
+                eventNames = _guildWars2ApiHandler.GetEventNames();
+                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.EventNames, eventNames);
+            }
+            return JsonConvert.DeserializeObject<List<EventName>>(eventNames.ToString());
         }
 
         private List<World> GetWorlds()
         {
-            var worlds = CouchbaseManager.Instance.Get(WorldKey);
+            var worlds = CouchbaseManager.Instance.Get(CouchbaseKeys.Worlds);
             if (worlds == null)
             {
-                worlds = SubmitQuery(WorldsUrl);
-                bool stored = CouchbaseManager.Instance.Store(StoreMode.Set, WorldKey, worlds);
+                worlds = _guildWars2ApiHandler.GetWorlds();
+                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.Worlds, worlds);
             }
-            return _javaScriptSerializer.Deserialize<List<World>>(worlds.ToString());
+            return JsonConvert.DeserializeObject<List<World>>(worlds.ToString());
         }
 
-        private object SubmitQuery<T>(string value)
+        public UpdateInfo Update()
         {
-            _dataContractJsonSerializer = new DataContractJsonSerializer(typeof(List<T>));
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(value);
-            httpWebRequest.MaximumAutomaticRedirections = 10;
-            httpWebRequest.MaximumResponseHeadersLength = 10;
-            httpWebRequest.Credentials = CredentialCache.DefaultCredentials;
-            HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse();
-            Stream receiveStream = response.GetResponseStream();
-            return receiveStream != null ? _dataContractJsonSerializer.ReadObject(receiveStream) : null;
-        }
-
-        private static string SubmitQuery(string value)
-        {
-            Console.WriteLine("Requesting: {0}", value);
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(value);
-            httpWebRequest.MaximumAutomaticRedirections = 10;
-            httpWebRequest.MaximumResponseHeadersLength = 10;
-            httpWebRequest.Credentials = CredentialCache.DefaultCredentials;
-            HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse();
-            Stream receiveStream = response.GetResponseStream();
-            if (receiveStream == null)
+            UpdateInfo updateInfo = new UpdateInfo();
+            if (_activeWorlds != null)
             {
-                return string.Empty;
+                foreach (World world in _activeWorlds)
+                {
+                    //TODO need to make this Asynchronous
+                    if (DateTime.Now - world.LastActive < new TimeSpan(0, 0, _minutesBeforeAWorldBecomesInactive, 0))
+                    {
+                        string key = CouchbaseKeys.GenerateKeyForWorld(world);
+                        bool isStored = CouchbaseManager.Instance.Store(
+                            StoreMode.Set
+                            , key
+                            , _guildWars2ApiHandler.GetEvent(world)
+                            );
+                        if (isStored)
+                        {
+                            updateInfo.ActiveWorldsUpdates++;
+                            Console.WriteLine(
+                                "[{0}] {1} Updated."
+                                , DateTime.Now
+                                , key);
+                        }
+                        updateInfo.ActiveWorldsCount++;
+                    }
+                }
             }
-            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
-            return readStream.ReadToEnd();
+            return updateInfo;
         }
+
     }
 }
