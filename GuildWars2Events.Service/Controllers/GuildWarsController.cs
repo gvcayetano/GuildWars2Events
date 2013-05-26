@@ -53,33 +53,33 @@ namespace GuildWars2Events.Service.Controllers
 
         private List<MapName> GetMapNames()
         {
-            var mapNames = CouchbaseManager.Instance.Get(CouchbaseKeys.MapNames);
+            var mapNames = CouchbaseManager.Instance.Get(CouchbaseKeys.MapNamesEn);
             if (mapNames == null)
             {
                 mapNames = _guildWars2ApiHandler.GetMapNames();
-                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.MapNames, mapNames);
+                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.MapNamesEn, mapNames);
             }
             return JsonConvert.DeserializeObject<List<MapName>>(mapNames.ToString());
         }
 
         private List<EventName> GetEventNames()
         {
-            var eventNames = CouchbaseManager.Instance.Get(CouchbaseKeys.EventNames);
+            var eventNames = CouchbaseManager.Instance.Get(CouchbaseKeys.EventNamesEn);
             if (eventNames == null)
             {
                 eventNames = _guildWars2ApiHandler.GetEventNames();
-                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.EventNames, eventNames);
+                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.EventNamesEn, eventNames);
             }
             return JsonConvert.DeserializeObject<List<EventName>>(eventNames.ToString());
         }
 
         private List<World> GetWorlds()
         {
-            var worlds = CouchbaseManager.Instance.Get(CouchbaseKeys.Worlds);
+            var worlds = CouchbaseManager.Instance.Get(CouchbaseKeys.WorldNamesEn);
             if (worlds == null)
             {
                 worlds = _guildWars2ApiHandler.GetWorlds();
-                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.Worlds, worlds);
+                bool isStored = CouchbaseManager.Instance.Store(StoreMode.Set, CouchbaseKeys.WorldNamesEn, worlds);
             }
             return JsonConvert.DeserializeObject<List<World>>(worlds.ToString());
         }
