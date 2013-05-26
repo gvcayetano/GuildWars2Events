@@ -86,7 +86,19 @@ namespace GuildWars2EventsService.Controllers
 
         public UpdateInfo Update()
         {
-            UpdateInfo updateInfo = new UpdateInfo();
+            UpdateInfo updateInfo = new UpdateInfo()
+                {
+                    ActiveWorldsCount = 0
+                    , ActiveWorldsUpdates = 0
+                    , Message = string.Format("[{0}] The previous update process is still active. Will try again later.", DateTime.Now)
+                };
+            ServiceState serviceState = CouchbaseManager.GetServiceState();
+            if (serviceState.IsActive)
+            {
+                updateInfo.IsActive = serviceState.IsActive;
+                return updateInfo;
+            }
+            CouchbaseManager.SetServiceState(true);
             if (_activeWorlds != null)
             {
                 foreach (World world in _activeWorlds)
@@ -112,6 +124,15 @@ namespace GuildWars2EventsService.Controllers
                     }
                 }
             }
+            if (updateInfo.ActiveWorldsUpdates == 0)
+            {
+                updateInfo.Message = string.Format("[{0}] No updates.", DateTime.Now);
+            }
+            else
+            {
+                updateInfo.Message = string.Format("[{0}] Done with all updates.", DateTime.Now);
+            }
+            CouchbaseManager.SetServiceState(false);
             return updateInfo;
         }
 

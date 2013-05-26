@@ -11,6 +11,7 @@ namespace GuildWars2Events.Model
         public const string ActiveWorlds = "ActiveWorlds";
         public const string EventNames = "EventNames";
         public const string MapNames = "MapNames";
+        public const string ServiceState = "ServiceState";
         public const string Worlds = "Worlds";
 
         public static string GenerateKeyForWorld(World world)

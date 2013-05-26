@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Runtime.Serialization.Json;
 using System.Timers;
+using Enyim.Caching.Memcached;
 using GuildWars2Events.Model;
 using GuildWars2EventsService.Controllers;
 
@@ -19,8 +21,16 @@ namespace GuildWars2EventsService
             _timer.Elapsed += (sender, eventArgs) => GetEvents();
             GetEvents();
         }
-        public void Start() { _timer.Start(); }
-        public void Stop() { _timer.Stop(); }
+        public void Start()
+        {
+            CouchbaseManager.SetServiceState(false);
+            _timer.Start();
+        }
+        public void Stop()
+        {
+            CouchbaseManager.SetServiceState(false);
+            _timer.Stop();
+        }
 
         public void GetEvents()
         {
@@ -33,20 +43,18 @@ namespace GuildWars2EventsService
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                CouchbaseManager.SetServiceState(false);
             }
             finally
             {
                 if (updateInfo != null)
                 {
-                    Console.WriteLine("[{0}] Number of active worlds: {1}.", DateTime.Now, updateInfo.ActiveWorldsCount);
-                    if (updateInfo.ActiveWorldsUpdates > 0)
+                    if (!updateInfo.IsActive)
                     {
-                        Console.WriteLine("[{0}] Done with all updates.", DateTime.Now);
+                        Console.WriteLine("[{0}] Number of active worlds: {1}.", DateTime.Now,
+                                          updateInfo.ActiveWorldsCount);
                     }
-                    else
-                    {
-                        Console.WriteLine("[{0}] No updates.", DateTime.Now);
-                    }
+                    Console.WriteLine(updateInfo.Message);
                 }
             }
         }
