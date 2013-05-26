@@ -124,14 +124,7 @@ namespace GuildWars2EventsService.Controllers
                     }
                 }
             }
-            if (updateInfo.ActiveWorldsUpdates == 0)
-            {
-                updateInfo.Message = string.Format("[{0}] No updates.", DateTime.Now);
-            }
-            else
-            {
-                updateInfo.Message = string.Format("[{0}] Done with all updates.", DateTime.Now);
-            }
+            updateInfo.Message = string.Format(updateInfo.ActiveWorldsUpdates == 0 ? "[{0}] No updates." : "[{0}] Done with all updates.", DateTime.Now);
             CouchbaseManager.SetServiceState(false);
             return updateInfo;
         }
