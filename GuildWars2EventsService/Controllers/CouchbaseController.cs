@@ -6,7 +6,7 @@ using Enyim.Caching.Memcached;
 using GuildWars2Events.Model;
 using Newtonsoft.Json;
 
-namespace GuildWars2EventsService.Controllers
+namespace GuildWars2Events.Service.Controllers
 {
     public class CouchbaseController
     {

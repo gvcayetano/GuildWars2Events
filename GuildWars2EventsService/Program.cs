@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Topshelf;
 
-namespace GuildWars2EventsService
+namespace GuildWars2Events.Service
 {
     static class Program
     {

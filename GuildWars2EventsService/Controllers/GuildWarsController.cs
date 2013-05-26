@@ -6,7 +6,7 @@ using GuildWars2Events.Model;
 using GuildWars2Events.Model.Extensions;
 using Newtonsoft.Json;
 
-namespace GuildWars2EventsService.Controllers
+namespace GuildWars2Events.Service.Controllers
 {
     public class GuildWarsController
     {

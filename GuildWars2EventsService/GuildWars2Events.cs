@@ -5,9 +5,9 @@ using System.Runtime.Serialization.Json;
 using System.Timers;
 using Enyim.Caching.Memcached;
 using GuildWars2Events.Model;
-using GuildWars2EventsService.Controllers;
+using GuildWars2Events.Service.Controllers;
 
-namespace GuildWars2EventsService
+namespace GuildWars2Events.Service
 {
     public class GuildWars2Events
     {
