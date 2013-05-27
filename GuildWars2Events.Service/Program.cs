@@ -26,9 +26,9 @@ namespace GuildWars2Events.Service
                 });
                 x.RunAsLocalSystem();                            //6
 
-                x.SetDescription("Sample Topshelf Host");        //7
-                x.SetDisplayName("Stuff");                       //8
-                x.SetServiceName("stuff");                       //9
+                x.SetDescription("A Guild Wars 2 API Service");        //7
+                x.SetDisplayName("GuildWars2Events.Service");                       //8
+                x.SetServiceName("GuildWars2Events.Service");                       //9
             }); 
         }
     }
