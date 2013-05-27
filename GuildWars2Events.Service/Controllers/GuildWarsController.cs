@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Configuration;
 using Enyim.Caching.Memcached;
+using GuildWars2Events.Controllers;
 using GuildWars2Events.Model;
-using GuildWars2Events.Model.Extensions;
 using Newtonsoft.Json;
 
 namespace GuildWars2Events.Service.Controllers
