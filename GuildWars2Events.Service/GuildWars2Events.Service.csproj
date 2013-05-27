@@ -76,7 +76,7 @@
     <Content Include="References\Topshelf-3.0.2\net-4.0-full\Topshelf.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GuildWars2Events.Controllers\GuildWars2Events.Controller.csproj">
+    <ProjectReference Include="..\GuildWars2Events.Controller\GuildWars2Events.Controller.csproj">
       <Project>{ca6c1cf4-ddf7-47ca-b810-d8237d75bc5b}</Project>
       <Name>GuildWars2Events.Controller</Name>
     </ProjectReference>
