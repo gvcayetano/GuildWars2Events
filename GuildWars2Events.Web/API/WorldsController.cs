@@ -17,9 +17,37 @@ namespace GuildWars2Events.Web.API
         // GET api/worlds
         public object Get()
         {
-            var worlds = CouchbaseManager.Instance.Get(CouchbaseKeys.WorldNamesEn);
-            _worlds = JsonConvert.DeserializeObject<List<World>>(worlds.ToString());
-            return _worlds;
+            return CouchbaseManager.GetWorlds(CouchbaseKeys.WorldNamesEn);
+        }
+
+        // GET api/worlds
+        public object GetLocalizedWorlds(string lang)
+        {
+            string key;
+            switch (lang.ToLower())
+            {
+                case "de":
+                    {
+                        key = CouchbaseKeys.WorldNamesDe;
+                        break;
+                    }
+                case "es":
+                    {
+                        key = CouchbaseKeys.WorldNamesEs;
+                        break;
+                    }
+                case "fr":
+                    {
+                        key = CouchbaseKeys.WorldNamesFr;
+                        break;
+                    }
+                default:
+                    {
+                        key = CouchbaseKeys.WorldNamesEn;
+                        break;
+                    }
+            }
+            return CouchbaseManager.GetWorlds(key);
         }
 
         // GET api/worlds/5

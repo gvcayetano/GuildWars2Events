@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using Couchbase;
 using Couchbase.Configuration;
@@ -50,6 +51,12 @@ namespace GuildWars2Events.Controllers
         {
             var serviceStateJson = Instance.Get(CouchbaseKeys.ServiceState);
             return JsonConvert.DeserializeObject<ServiceState>(serviceStateJson.ToString());
+        }
+
+        public static List<World> GetWorlds(string key)
+        {
+            var worlds = CouchbaseManager.Instance.Get(key);
+            return worlds != null ? JsonConvert.DeserializeObject<List<World>>(worlds.ToString()) : null;
         }
     }
 }
