@@ -8,7 +8,7 @@ using GuildWars2Events.Controllers;
 using GuildWars2Events.Model;
 using Newtonsoft.Json;
 
-namespace GuildWars2Events.Web.APIs
+namespace GuildWars2Events.Web.API
 {
     public class WorldsController : ApiController
     {
