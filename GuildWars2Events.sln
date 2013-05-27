@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuildWars2Events.Model", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guildwars2Events.Web", "Guildwars2Events.Web\Guildwars2Events.Web.csproj", "{8262491F-B884-4039-BE40-8A317710C3F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuildWars2Events.Controllers", "GuildWars2Events.Controllers\GuildWars2Events.Controllers.csproj", "{CA6C1CF4-DDF7-47CA-B810-D8237D75BC5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuildWars2Events.Controller", "GuildWars2Events.Controller\GuildWars2Events.Controller.csproj", "{CA6C1CF4-DDF7-47CA-B810-D8237D75BC5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
