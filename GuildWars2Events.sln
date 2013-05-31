@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guildwars2Events.Web", "Gui
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuildWars2Events.Controller", "GuildWars2Events.Controller\GuildWars2Events.Controller.csproj", "{CA6C1CF4-DDF7-47CA-B810-D8237D75BC5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuildWars2Events.Configuration", "GuildWars2Events.Configuration\GuildWars2Events.Configuration.csproj", "{F76FD9C1-2F9B-4871-BEEC-72FF46F0CEA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{CA6C1CF4-DDF7-47CA-B810-D8237D75BC5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA6C1CF4-DDF7-47CA-B810-D8237D75BC5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA6C1CF4-DDF7-47CA-B810-D8237D75BC5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F76FD9C1-2F9B-4871-BEEC-72FF46F0CEA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F76FD9C1-2F9B-4871-BEEC-72FF46F0CEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F76FD9C1-2F9B-4871-BEEC-72FF46F0CEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F76FD9C1-2F9B-4871-BEEC-72FF46F0CEA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

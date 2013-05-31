@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GuildWars2Events.Configuration.API" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>API.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GuildWars2Events.Configuration.APICollection" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAAAAAAIAAACAAAhAAAAAABAAAACAAAAABAAAA=</HashCode>
+      <FileName>APICollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GuildWars2Events.Configuration.APIConfigurationSection" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAQAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APIConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GuildWars2Events.Configuration.GuildWars2APIConfiguration" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GuildWars2APIConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="GuildWars2Events.Configuration.IAPIUrl" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>IAPIUrl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
